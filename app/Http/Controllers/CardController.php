@@ -18,6 +18,11 @@ class CardController extends Controller
         return view('dashboard')->with('cards',$cards);
     }
 
+    public function show(Card $card)
+    {
+        return view('show-card')->with('card',$card);
+    }
+
     public function edit($id = 0)
     {
        $user = auth()->user();
@@ -34,6 +39,7 @@ class CardController extends Controller
     {
         $data = request()->validate([
             'name' => 'required',
+            'note' => 'nullable'
         ]);
 
         $data['user_id'] = auth()->user()->id;

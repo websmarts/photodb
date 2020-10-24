@@ -14,7 +14,8 @@
 
                 <x-table>
                     <x-slot name="head">
-                        <x-table.heading class="w-full text-left">Card name</x-table.heading>
+                        <x-table.heading class=" w-1/3 sm:w-1/4 text-left">Card name</x-table.heading>
+                        <x-table.heading class="sm:w-full text-left">Notes</x-table.heading>
                         <x-table.heading />
 
                     </x-slot>
@@ -22,18 +23,11 @@
                     <x-slot name="body">
                         @forelse($cards as $card)
                         <x-table.row>
-                            <x-table.cell>{{ $card->name }}</x-table.cell>
+                            <x-table.cell><a href="{{ route('card.show',['card'=>$card->id])}}">{{ $card->name }}</a></x-table.cell>
+                            <x-table.cell>{{ $card->note }}</x-table.cell>
                             <x-table.cell> <a href="/card/{{ $card->id }}/edit">Edit</a></x-table.cell>
                         </x-table.row>
-                        <x-table.row>
-                            <x-table.cell colspan="2">
-                                <div class="flex">
-                                    @foreach($card->photos as $photo)
-                                    <img src="/storage/photos/tn/{{$photo->filepath}}" />
-                                    @endforeach
-                                </div>
-                            </x-table.cell>
-                        </x-table.row>
+                        
 
                         @empty
 

@@ -28,6 +28,6 @@ class CreateCardPhotoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('card_photos');
+        Schema::dropIfExists('card_photo');
     }
 }

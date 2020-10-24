@@ -9,7 +9,7 @@ class Card extends Model
 {
     use HasFactory;
 
-    protected $fillable =['id','user_id','name'];
+    protected $fillable =['id','user_id','name','note'];
 
 
     public function photos()

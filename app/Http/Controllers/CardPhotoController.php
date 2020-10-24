@@ -6,13 +6,15 @@ use App\Models\Card;
 use App\Models\Photo;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class CardPhotoController extends Controller
 {
     public function store(Request $request, $cardId)
     {
         
-        
+        $user = auth()->user();
+
         $card = Card::findOrFail($cardId);
 
         $request->validate([
@@ -28,14 +30,15 @@ class CardPhotoController extends Controller
 
 
         $filename = time() . '.' . strtolower($photo->getClientOriginalExtension());
-        $photo->storeAs('.', $filename,'photostore');
+        $photo->storeAs('./'.$user->id.'/', $filename,'photostore');
 
         // resize the image to a width of 300 and constrain aspect ratio (auto height)
 
         $image->resize(100, null, function ($constraint) {
             $constraint->aspectRatio();
         });
-        $image->save(storage_path('app/public/photos/tn/' . $filename));
+
+        $image->save(storage_path('app/public/photos/'.$user->id.'/tn_' . $filename));
 
         // Insert photo table into db
         //
@@ -52,17 +55,20 @@ class CardPhotoController extends Controller
 
         $card->photos()->attach($newPhoto);
 
+        return redirect()->back();
+    }
 
-        // // $photo = Image::make($photo);
+    public function deletePhoto($card,$photo)
+    {
+        $photo = Photo::findOrFail($photo);
+        Card::findorFail($card)->photos()->detach($photo);
 
-        // $photo = Photo::create(['photo'=>$photo]);
+        Storage::disk('photostore')->delete($photo->user_id.'/'.$photo->filepath);
+        Storage::disk('photostore')->delete($photo->user_id.'/tn_'.$photo->filepath);
 
-        // $card->attach($photo);
+        $photo->delete();
 
-        return redirect('/dashboard');
+        return redirect()->back();
 
-
-
-        
     }
 }

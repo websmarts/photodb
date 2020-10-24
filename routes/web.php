@@ -16,12 +16,15 @@ use App\Http\Controllers\CardPhotoController;
 */
 
 Route::get('/', function(){
-    return view('welcome');
+    return redirect('dashboard');
 });
 
 
+
 Route::get('/card/{card?}/edit', [CardController::class, 'edit'])->name('card.edit');
+Route::get('/card/{card?}/photo/{photo}/delete', [CardPhotoController::class, 'deletePhoto'])->name('photo.delete');
 Route::post('/card/{card?}/photo', [CardPhotoController::class, 'store'])->name('photo.upload');
+Route::get('/card/{card}', [CardController::class, 'show'])->name('card.show');
 Route::get('/card', [CardController::class, 'index']);
 Route::post('/card/{card?}', [CardController::class, 'store']);
 
