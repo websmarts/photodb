@@ -1,0 +1,1 @@
+<x-app-layout>Card index</x-app-layout>

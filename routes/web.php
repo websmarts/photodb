@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CardController;
+use App\Http\Controllers\CardPhotoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function(){
     return view('welcome');
 });
+
+
+Route::get('/card/{card?}/edit', [CardController::class, 'edit'])->name('card.edit');
+Route::post('/card/{card?}/photo', [CardPhotoController::class, 'store'])->name('photo.upload');
+Route::get('/card', [CardController::class, 'index']);
+Route::post('/card/{card?}', [CardController::class, 'store']);
+
+
+
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard',[CardController::class,'index'])->name('dashboard');
